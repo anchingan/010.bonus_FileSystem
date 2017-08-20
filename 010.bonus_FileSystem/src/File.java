@@ -1,6 +1,5 @@
 
 public class File extends FileEntity {
-	
 	//Constructor
 	public File(String name) {
 		super(name);

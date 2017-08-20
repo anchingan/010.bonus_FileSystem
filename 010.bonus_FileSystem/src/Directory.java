@@ -27,10 +27,40 @@ public class Directory extends FileEntity {
 	}
 	
 	//Search files by key value.(you can use recursive)
-	public String[] search(String keyword) {
-		String[] a = new String[5];
-		
-		return a;
+//	public String[] search(String keyword) {
+//		String[] a = new String[5];
+//		
+//		return a;
+//	}
+	
+	public String search(String keyword) {
+		String a ; //= new String("")
+		if (this.itemCount == 0) {
+			if (this.getName().contains(keyword) == true) {
+				a = this.name();
+				return a;
+			}
+			else
+				return null;
+		}
+		else {
+			for (int i = 0; i < this.itemCount; i++) {
+				if (dirList[i].getClass().getName().equals("Directory")) {
+					String temp = ((Directory) dirList[i]).search(keyword);
+					if (temp != null) {
+						a = dirList[i].name() + "\\" + temp;
+						return a;
+					}
+				}
+				else {
+					if (dirList[i].getName().contains(keyword) == true) {
+						a = this.name() + "\\" + dirList[i].name();
+						return a;
+					}
+				}
+			}
+		}
+		return null;
 	}
 	
 	//Get number of item in this directory.
