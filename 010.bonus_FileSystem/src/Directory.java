@@ -33,29 +33,43 @@ public class Directory extends FileEntity {
 //		return a;
 //	}
 	
-	public String search(String keyword) {
-		String a ; //= new String("")
+	public String[] search(String keyword) {
+		String[] a = new String[itemCount] ; //= new String("")
 		if (this.itemCount == 0) {
 			if (this.getName().contains(keyword) == true) {
-				a = this.name();
-				return a;
+				for (int i = 0; i < itemCount; i++) {
+					if (a[i] == null) {
+						a[i] = this.name();
+						break;
+					}
+				}
 			}
-			else
-				return null;
+			return a;
 		}
 		else {
 			for (int i = 0; i < this.itemCount; i++) {
 				if (dirList[i].getClass().getName().equals("Directory")) {
-					String temp = ((Directory) dirList[i]).search(keyword);
-					if (temp != null) {
-						a = dirList[i].name() + "\\" + temp;
-						return a;
+					String[] temp = ((Directory) dirList[i]).search(keyword);
+					for (int j = 0; j < this.itemCount; j++) {
+						if (temp[j] != null) {
+							a[i] = dirList[i].name() + "\\" + temp[j];
+							return a;
+						}
 					}
+
 				}
 				else {
 					if (dirList[i].getName().contains(keyword) == true) {
-						a = this.name() + "\\" + dirList[i].name();
-						return a;
+						for (int j = 0; j < this.itemCount; j++) {
+							if (a[j] != null) {
+								a[j] = dirList[i].name() + "\\" + a[j];
+								return a;
+							}
+						}
+//						a = this.name() + "\\" + dirList[i].name();
+//						if (this.parent.name().equals("root") == true)
+//							a = "root\\" + a;
+//						return a;
 					}
 				}
 			}

@@ -27,6 +27,7 @@ public class TestFileSystem {
 //		root.search("a");
 //		root.search("B");
 		System.out.println(root.search("A"));
+		System.out.println(root.search("a"));
 		System.out.println(root.search("B"));
 
 	}
