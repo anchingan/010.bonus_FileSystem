@@ -1,10 +1,12 @@
 //Represent for an item in the file system, which can be a file or a directory.
 public abstract class FileEntity {
-	
+	//Parent directory of this directory or file.
+	protected Directory parent;
 	//Name of directory or file.
-	private String name; //Private or ??		
+	protected String name;	
 	//Get name of item.
-	public abstract String getName();	
+	
+	abstract public String getName();	
 	
 	//Constructor.
 	public FileEntity(String name) {
@@ -17,15 +19,24 @@ public abstract class FileEntity {
 			this.name = "name undefined";
 	}
 	
-	protected String name() {
-		return this.name;
+	public void setParent(Directory parent) {
+		this.parent = parent;
 	}
 	
-	@Override
-	public String toString() {
-		String a = this.getName();
-		return a;
+	
+	public Directory getParent() {
+		return this.parent;
 	}
-
+	
+	public String getPath() {
+		return recurGetPath(parent) + "\\" + getName();
+	}
+	
+	private String recurGetPath(Directory parent) {
+		if (parent == null)
+			return "";
+		return recurGetPath(parent.getParent()) + "\\" + parent.getName();
+	}
+	
 
 }

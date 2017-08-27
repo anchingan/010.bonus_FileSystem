@@ -8,28 +8,58 @@ import java.util.Scanner;
 
 public class TestFileSystem {
 
+	public static FileManagement fm = new FileManagement();
 	public static void main(String[] args) {
+		Scanner scanner = new Scanner(System.in);
 		Directory root = new Directory("root");
-//		System.out.println(root);
-		String a = root.getClass().toString();
-//		System.out.println(a);
-//		System.out.println(root.getClass().toString());
-//		System.out.println(root.getClass().getName());
-		Directory testa = new Directory("testa", root);
-		root.addItem(testa);
-		root.search("a");
-		File rootFileA = new File("rootFileA");
-		root.addItem(rootFileA);
-		File rootFileB = new File("rootFileB");
-		root.addItem(rootFileB);
-		File testaFileB = new File("testaFileB");
-		testa.addItem(testaFileB);
-//		root.search("a");
-//		root.search("B");
-		System.out.println(root.search("A"));
-		System.out.println(root.search("a"));
-		System.out.println(root.search("B"));
+		String commandLine, itemName;
+		CommandParser parser = new CommandParser("");
+		boolean result;
+		do {
+			System.out.print(fm.curDir.getPath() + ">");
+			commandLine = scanner.nextLine();
+			parser.setCommand(commandLine);
+			if (commandLine.equals("quit"))
+				break;
+			else if (parser.isValid() == false)
+				System.out.println("Input error!");
+			else if (parser.getCommand() == Command.LS)
+				System.out.print(fm.ls());
+			else if (parser.getCommand() == Command.CD) {
+				itemName = parser.getArgs()[0];
+				result = fm.cd(itemName);
+				if (result == false)
+					System.out.println("Input error!");
+			}
+			else if (parser.getCommand() == Command.BACK) {
+				result = fm.back();
+				if (result == false)
+					System.out.println("Input error!");
+			}
+			else if (parser.getCommand() == Command.TOUCH) {
+				itemName = parser.getArgs()[0];
+				result = fm.touch(itemName);
+				if (result == false)
+					System.out.println("Input error!");
+			}
+			else if (parser.getCommand() == Command.MKDIR) {
+				itemName = parser.getArgs()[0];
+				fm.mkdir(itemName);
+			}
+			else if (parser.getCommand() == Command.SEARCH) {
+				itemName = parser.getArgs()[0];
+				String[] s = fm.search(itemName);
+				if (s != null) {
+					for (int i = 0; i < s.length; i++)
+						System.out.println(s[i]);
+				}
+			}
+
+		} while (true);
+		
+		System.out.println("Program terminate.");
 
 	}
+	
 
 }
